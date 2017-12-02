@@ -3,7 +3,7 @@ const _ = require('lodash');
 
 // Reads entire file contents into one string
 exports.getInputString = function (filename) {
-  return fs.readFileSync(`input/${filename}`, 'utf8');
+  return _.trim(fs.readFileSync(`input/${filename}`, 'utf8'));
 }
 
 // Reads each line of file contents into array
