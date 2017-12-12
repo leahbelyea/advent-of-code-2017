@@ -1,16 +1,4 @@
 const _ = require('lodash');
-const {getInputString} = require('./helpers')
-
-let input = parseInt(getInputString('3.txt'));
-
-// Sample input
-// Part 1
-// input = 1 // 0
-// input = 12 // 3
-// input = 23 // 2
-// input = 1024 // 31
-
-// Part 1
 
 // I thought it would be fun to derive an equation to get the position of a
 // number in the spiral, instead of having to construct the whole spiral
@@ -60,33 +48,36 @@ function getSpiralPosition(n) {
   return [x, y];
 }
 
-const inputPos = getSpiralPosition(input);
-console.log('# Part 1 #');
-console.log(Math.abs(inputPos[0]) + Math.abs(inputPos[1]));
+exports.inputType = 'string';
 
-// Part 2
-const grid = {"0,0": 1};
-let gridNumber = 1;
-let lastVal = 1;
-
-while (input >= lastVal) {
-  gridNumber++;
-  newCoords = getSpiralPosition(gridNumber);
-
-  const newVal = _.sum([
-    _.get(grid, `${newCoords[0] - 1},${newCoords[1] + 1}`, 0),
-    _.get(grid, `${newCoords[0]},${newCoords[1] + 1}`, 0),
-    _.get(grid, `${newCoords[0] + 1},${newCoords[1] + 1}`, 0),
-    _.get(grid, `${newCoords[0] - 1},${newCoords[1]}`, 0),
-    _.get(grid, `${newCoords[0] + 1},${newCoords[1]}`, 0),
-    _.get(grid, `${newCoords[0] - 1},${newCoords[1] - 1}`, 0),
-    _.get(grid, `${newCoords[0]},${newCoords[1] - 1}`, 0),
-    _.get(grid, `${newCoords[0] + 1},${newCoords[1] - 1}`, 0)
-  ]);
-
-  grid[_.join(newCoords, ',')] = newVal;
-  lastVal = newVal;
+exports.part1 = function(input) {
+  const inputPos = getSpiralPosition(input);
+  return Math.abs(inputPos[0]) + Math.abs(inputPos[1]);
 }
 
-console.log('\n# Part 2 #');
-console.log(lastVal);
+exports.part2 = function(input) {
+  const grid = {"0,0": 1};
+  let gridNumber = 1;
+  let lastVal = 1;
+
+  while (input >= lastVal) {
+    gridNumber++;
+    newCoords = getSpiralPosition(gridNumber);
+
+    const newVal = _.sum([
+      _.get(grid, `${newCoords[0] - 1},${newCoords[1] + 1}`, 0),
+      _.get(grid, `${newCoords[0]},${newCoords[1] + 1}`, 0),
+      _.get(grid, `${newCoords[0] + 1},${newCoords[1] + 1}`, 0),
+      _.get(grid, `${newCoords[0] - 1},${newCoords[1]}`, 0),
+      _.get(grid, `${newCoords[0] + 1},${newCoords[1]}`, 0),
+      _.get(grid, `${newCoords[0] - 1},${newCoords[1] - 1}`, 0),
+      _.get(grid, `${newCoords[0]},${newCoords[1] - 1}`, 0),
+      _.get(grid, `${newCoords[0] + 1},${newCoords[1] - 1}`, 0)
+    ]);
+
+    grid[_.join(newCoords, ',')] = newVal;
+    lastVal = newVal;
+  }
+
+  return lastVal;
+}

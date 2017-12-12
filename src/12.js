@@ -1,27 +1,22 @@
 const _ = require('lodash');
-const {getInputArray} = require('./helpers');
 
-let input;
-input = getInputArray('12.txt');
+function formatInput(rawInput) {
+  return _.map(rawInput, line => {
+    return _.split(line, ' ');
+  });
+}
 
-// Sample input
-// Part 1 and 2
-// input = [
-//   '0 <-> 2',
-//   '1 <-> 1',
-//   '2 <-> 0, 3, 4',
-//   '3 <-> 2, 4',
-//   '4 <-> 2, 3, 6',
-//   '5 <-> 6',
-//   '6 <-> 4, 5'
-// ] // Part 1: 6, Part 2: 2
+function buildGraph(input) {
+  const graph = {};
 
-const programGraph = {};
-_.each(input, line => {
-  let [node, children] = _.split(line, ' <-> ');
-  children = _.split(children, ', ');
-  programGraph[parseInt(node)] = children;
-});
+  _.each(input, line => {
+    let [node, children] = _.split(line, ' <-> ');
+    children = _.split(children, ', ');
+    graph[parseInt(node)] = children;
+  });
+
+  return graph;
+}
 
 function hasPath(start, end, graph) {
   const visited = [];
@@ -46,34 +41,39 @@ function hasPath(start, end, graph) {
   return false;
 }
 
-// Part 1
-let numPaths = 0;
-_.each(programGraph, (children, program) => {
-  if (hasPath(program, '0', programGraph)) {
-    numPaths++;
-  }
-});
+exports.inputType = 'array';
 
-console.log('# Part 1 #');
-console.log(numPaths);
+exports.part1 = function(input) {
+  const programGraph = buildGraph(input);
+  let numPaths = 0;
 
-
-// Part 2
-let numGroups = 0;
-const graph = _.clone(programGraph);
-
-while (!_.isEmpty(graph)) {
-  const programs = _.keys(graph);
-  const end = _.first(_.keys(graph));
-
-  _.each(programs, program => {
-    if (hasPath(program, end, programGraph)) {
-      delete graph[program];
+  _.each(programGraph, (children, program) => {
+    if (hasPath(program, '0', programGraph)) {
+      numPaths++;
     }
   });
 
-  numGroups++;
+  return numPaths;
+
 }
 
-console.log('\n# Part 2 #');
-console.log(numGroups);
+exports.part2 = function(input) {
+  const programGraph = buildGraph(input);
+  const graph = _.clone(programGraph);
+  let numGroups = 0;
+
+  while (!_.isEmpty(graph)) {
+    const programs = _.keys(graph);
+    const end = _.first(_.keys(graph));
+
+    _.each(programs, program => {
+      if (hasPath(program, end, programGraph)) {
+        delete graph[program];
+      }
+    });
+
+    numGroups++;
+  }
+
+  return numGroups;
+}

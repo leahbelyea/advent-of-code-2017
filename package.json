@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "aoc": "node app.js"
+    "aoc": "node app.js",
+    "test": "mocha test"
   },
   "author": "Leah Belyea",
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "mocha": "^4.0.1"
   },
   "devDependencies": {}
 }

@@ -1,14 +1,8 @@
 const _ = require('lodash');
-const {getInputString} = require('./helpers')
 
-let input;
-input = getInputString('6.txt');
-
-// // Sample input
-// // Part 1 and 2
-// input = '0 2 7 0'; // Part 1: 5, Part 2: 4
-
-input = _.map(_.split(input, /\s+/), num => { return parseInt(num) });
+function formatInput(rawInput) {
+  return _.map(_.split(rawInput, /\s+/), num => { return parseInt(num) });
+}
 
 function getNewConfiguration(banks) {
   const maxBlocks = _.max(banks);
@@ -26,20 +20,31 @@ function getNewConfiguration(banks) {
   return banks;
 }
 
-// Part 1
-const configurations = [];
-let banks = _.clone(input);
+function getConfigurations(banks) {
+  const configurations = [];
 
-while (!_.includes(configurations, _.join(banks, '-'))) {
-  configurations.push(_.join(banks, '-'));
-  banks = getNewConfiguration(banks);
+  while (!_.includes(configurations, _.join(banks, '-'))) {
+    configurations.push(_.join(banks, '-'));
+    banks = getNewConfiguration(banks);
+  }
+
+  return configurations;
 }
 
-console.log('# Part 1 #');
-console.log(_.size(configurations));
+exports.inputType = 'string';
 
-// Part 2
-const cycleStart = _.findIndex(configurations, configuration => { return configuration === _.join(banks, '-') });
+exports.part1 = function(rawInput) {
+  const input = formatInput(rawInput);
 
-console.log('\n# Part 2 #');
-console.log(_.size(configurations) - cycleStart);
+  const configurations = getConfigurations(_.clone(input));
+  return _.size(configurations);
+}
+
+exports.part2 = function(rawInput) {
+  const input = formatInput(rawInput);
+
+  const banks = _.clone(input);
+  const configurations = getConfigurations(banks);
+  const cycleStart = _.findIndex(configurations, configuration => { return configuration === _.join(banks, '-') });
+  return _.size(configurations) - cycleStart;
+}

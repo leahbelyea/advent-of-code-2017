@@ -1,39 +1,41 @@
 const _ = require('lodash');
-const {getInputArray} = require('./helpers')
 
-let input;
-input = _.map(getInputArray('5.txt'), num => { return parseInt(num) });
-
-// // Sample input
-// // Part 1 and 2
-// input = [0, 3, 0, 1, -3]; // Part 1: 5, Part 2: 10
-
-// Part 1
-let jumps = _.clone(input);
-let currentPos = 0;
-let steps = 0;
-
-while (currentPos < _.size(jumps) && currentPos >= 0) {
-  const jump = jumps[currentPos];
-  jumps[currentPos]++;
-  currentPos += jump;
-  steps++;
+function formatInput(rawInput) {
+  return _.map(rawInput, num => { return parseInt(num) });
 }
 
-console.log('# Part 1 #');
-console.log(steps);
+exports.inputType = 'array';
 
-// Part 2
-jumps = _.clone(input);
-currentPos = 0;
-steps = 0;
+exports.part1 = function(rawInput) {
+  const input = formatInput(rawInput);
 
-while (currentPos < _.size(jumps) && currentPos >= 0) {
-  const jump = jumps[currentPos];
-  jumps[currentPos] = jump >= 3 ? jumps[currentPos] - 1 : jumps[currentPos] + 1;
-  currentPos += jump;
-  steps++;
+  let jumps = _.clone(input);
+  let currentPos = 0;
+  let steps = 0;
+
+  while (currentPos < _.size(jumps) && currentPos >= 0) {
+    const jump = jumps[currentPos];
+    jumps[currentPos]++;
+    currentPos += jump;
+    steps++;
+  }
+
+  return steps;
 }
 
-console.log('\n# Part 2 #');
-console.log(steps);
+exports.part2 = function(rawInput) {
+  const input = formatInput(rawInput);
+
+  jumps = _.clone(input);
+  currentPos = 0;
+  steps = 0;
+
+  while (currentPos < _.size(jumps) && currentPos >= 0) {
+    const jump = jumps[currentPos];
+    jumps[currentPos] = jump >= 3 ? jumps[currentPos] - 1 : jumps[currentPos] + 1;
+    currentPos += jump;
+    steps++;
+  }
+
+  return steps;
+}

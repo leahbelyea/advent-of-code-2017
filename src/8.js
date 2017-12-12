@@ -1,17 +1,4 @@
 const _ = require('lodash');
-const {getInputArray} = require('./helpers')
-
-let input;
-input = getInputArray('8.txt');
-
-// // Sample input
-// // Part 1 and 2
-// input= [
-//   'b inc 5 if a > 1',
-//   'a inc 1 if b < 5',
-//   'c dec -10 if a >= 1',
-//   'c inc -20 if c == 10'
-// ]; // Part 1: 1, Part 2: 10
 
 function processInstruction(instruction, registers) {
   // Parse instruction
@@ -52,25 +39,27 @@ function processInstruction(instruction, registers) {
   return registers;
 }
 
-// Part 1
-let registers = {};
+exports.inputType = 'array';
 
-_.each(input, instruction => {
-  registers = processInstruction(instruction, registers);
-});
+exports.part1 = function(input) {
+  let registers = {};
 
-console.log('# Part 1 #');
-console.log(_.max(_.map(registers)));
+  _.each(input, instruction => {
+    registers = processInstruction(instruction, registers);
+  });
 
-// Part 2
-registers = {};
-let maxVal;
+  return _.max(_.map(registers));
+}
 
-_.each(input, instruction => {
-  registers = processInstruction(instruction, registers);
-  const currentMax = _.max(_.map(registers));
-  maxVal =  !maxVal || currentMax > maxVal? currentMax : maxVal;
-});
+exports.part2 = function(input) {
+  let registers = {};
+  let maxVal;
 
-console.log('\n\n# Part 2 #');
-console.log(maxVal);
+  _.each(input, instruction => {
+    registers = processInstruction(instruction, registers);
+    const currentMax = _.max(_.map(registers));
+    maxVal =  !maxVal || currentMax > maxVal? currentMax : maxVal;
+  });
+
+  return maxVal;
+}

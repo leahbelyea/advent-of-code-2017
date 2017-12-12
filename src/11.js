@@ -1,59 +1,8 @@
 const _ = require('lodash');
-const {getInputString} = require('./helpers')
 
-let input;
-input = getInputString('11.txt');
-
-// Sample input
-// Part 1
-// input = 'ne,ne,ne' // 3
-// input = 'ne,ne,sw,sw' // 0
-// input = 'ne,ne,s,s' // 2
-// input = 'se,sw,se,sw,sw' // 3
-
-const directions = _.split(input, ',');
-
-// Represent the hex grid as a regular grid. ne, se, sw, and nw all go
-// diagonally (x+1, y+1) in the relevant direction. The way it works out,
-// each step n/s on the hex grid is equivalent to TWO steps n/s on the regular
-// grid. On the hex grid, and thus on the regular grid representation, there
-// is no way to move directly east or west.
-
-// We will first find the final position on the regular grid representation,
-// then we will calculate how far away that is from the origin based on the hex
-// grid.
-
-
-// Part 1
-let currentPos = {x: 0, y: 0};
-
-// Find final position on the regular grid
-_.each(directions, direction => {
-  switch(direction) {
-    case 'n':
-      currentPos.y += 2;
-      break;
-    case 'ne':
-      currentPos.x++;
-      currentPos.y++;
-      break;
-    case 'se':
-      currentPos.x++;
-      currentPos.y--;
-      break;
-    case 's':
-      currentPos.y -= 2;
-      break;
-    case 'sw':
-      currentPos.x--;
-      currentPos.y--;
-      break;
-    case 'nw':
-      currentPos.x--;
-      currentPos.y++;
-      break;
-  }
-});
+function formatInput(rawInput) {
+  return  _.split(rawInput, ',');
+}
 
 // Get distance. Based on scratch paper drawings, the shortest way to get back
 // to the origin appears to be by going diagonally back to the origin as far
@@ -77,47 +26,82 @@ function getDistanceToOrigin(position) {
   return steps;
 }
 
-console.log('# Part 1 #');
-console.log(getDistanceToOrigin(currentPos));
+exports.inputType = 'array';
 
+exports.part1 = function(rawInput) {
+  const input = formatInput(rawInput);
 
-// Part 2
-currentPos = {x: 0, y: 0};
-let currentDistance = 0;
-let largestDistance = 0;
+  let currentPos = {x: 0, y: 0};
 
-_.each(directions, direction => {
-  switch(direction) {
-    case 'n':
-      currentPos.y += 2;
-      break;
-    case 'ne':
-      currentPos.x++;
-      currentPos.y++;
-      break;
-    case 'se':
-      currentPos.x++;
-      currentPos.y--;
-      break;
-    case 's':
-      currentPos.y -= 2;
-      break;
-    case 'sw':
-      currentPos.x--;
-      currentPos.y--;
-      break;
-    case 'nw':
-      currentPos.x--;
-      currentPos.y++;
-      break;
-  }
+  // Find final position on the regular grid
+  _.each(input, direction => {
+    switch(direction) {
+      case 'n':
+        currentPos.y += 2;
+        break;
+      case 'ne':
+        currentPos.x++;
+        currentPos.y++;
+        break;
+      case 'se':
+        currentPos.x++;
+        currentPos.y--;
+        break;
+      case 's':
+        currentPos.y -= 2;
+        break;
+      case 'sw':
+        currentPos.x--;
+        currentPos.y--;
+        break;
+      case 'nw':
+        currentPos.x--;
+        currentPos.y++;
+        break;
+    }
+  });
 
-  currentDistance = getDistanceToOrigin(currentPos);
-  if (currentDistance > largestDistance) {
-    largestDistance = currentDistance;
-  }
+  return getDistanceToOrigin(currentPos);
+}
 
-});
+exports.part2 = function(rawInput) {
+  const input = formatInput(rawInput);
 
-console.log('\n# Part 2 #');
-console.log(largestDistance);
+  let currentPos = {x: 0, y: 0};
+  let currentDistance = 0;
+  let largestDistance = 0;
+
+  _.each(input, direction => {
+    switch(direction) {
+      case 'n':
+        currentPos.y += 2;
+        break;
+      case 'ne':
+        currentPos.x++;
+        currentPos.y++;
+        break;
+      case 'se':
+        currentPos.x++;
+        currentPos.y--;
+        break;
+      case 's':
+        currentPos.y -= 2;
+        break;
+      case 'sw':
+        currentPos.x--;
+        currentPos.y--;
+        break;
+      case 'nw':
+        currentPos.x--;
+        currentPos.y++;
+        break;
+    }
+
+    currentDistance = getDistanceToOrigin(currentPos);
+    if (currentDistance > largestDistance) {
+      largestDistance = currentDistance;
+    }
+  });
+
+  return largestDistance;
+}

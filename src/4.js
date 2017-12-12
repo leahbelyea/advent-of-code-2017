@@ -1,58 +1,46 @@
 const _ = require('lodash');
-const {getInputArray} = require('./helpers')
 
-let input;
-input = getInputArray('4.txt');
+function formatInput(rawInput) {
+  return _.map(rawInput, line => {
+    return _.split(line, ' ');
+  });
+}
 
-// // Sample input
-// // Part 1
-// input = [
-//   'aa bb cc dd ee',
-//   'aa bb cc dd aa',
-//   'aa bb cc dd aaa'
-// ]; // 2
-// // Part 2
-// input = [
-//   'abcde fghij',
-//   'abcde xyz ecdab',
-//   'a ab abc abd abf abj',
-//   'iiii oiii ooii oooi oooo',
-//   'oiii ioii iioi iiio'
-// ]; // 3
+exports.inputType = 'array';
 
-input = _.map(input, line => {
-  return _.split(line, ' ');
-})
+exports.part1 = function(rawInput) {
+  const input = formatInput(rawInput);
 
-// Part 1
-let validCount = 0;
+  let validCount = 0;
 
-_.each(input, passphrase => {
-  const wordCount = _.size(passphrase);
-  const uniqueWordCount = _.size(_.uniq(passphrase));
-  if (wordCount === uniqueWordCount) {
-    validCount++;
-  }
-});
+  _.each(input, passphrase => {
+    const wordCount = _.size(passphrase);
+    const uniqueWordCount = _.size(_.uniq(passphrase));
+    if (wordCount === uniqueWordCount) {
+      validCount++;
+    }
+  });
 
-console.log('# Part 1 #');
-console.log(validCount);
+  return validCount;
+}
 
-// Part 2
-validCount = 0;
+exports.part2 = function(rawInput) {
+  const input = formatInput(rawInput);
 
-_.each(input, passphrase => {
-  const wordCount = _.size(passphrase);
-  const uniqueWordCount = _.size(_.uniqWith(passphrase, (a, b) => {
-    a = _.split(a, '').sort();
-    b = _.split(b, '').sort();
-    return _.isEqual(a, b);
-  }));
+  let validCount = 0;
 
-  if (wordCount === uniqueWordCount) {
-    validCount++;
-  }
-});
+  _.each(input, passphrase => {
+    const wordCount = _.size(passphrase);
+    const uniqueWordCount = _.size(_.uniqWith(passphrase, (a, b) => {
+      a = _.split(a, '').sort();
+      b = _.split(b, '').sort();
+      return _.isEqual(a, b);
+    }));
 
-console.log('\n# Part 2 #');
-console.log(validCount);
+    if (wordCount === uniqueWordCount) {
+      validCount++;
+    }
+  });
+
+  return validCount;
+}
