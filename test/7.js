@@ -1,6 +1,6 @@
 var assert = require('assert');
 var _ = require('lodash');
-var {part1, part2, inputType} = require(`../src/7.js`);
+var {part1, part2} = require(`../src/7.js`);
 
 inputPart1 = [
   {
