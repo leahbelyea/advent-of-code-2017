@@ -1,7 +1,5 @@
 const _ = require('lodash');
 
-exports.inputType = 'array';
-
 function formatInput(rawInput) {
   return _.map(rawInput, line => {
     return _.split(line, '');
@@ -109,6 +107,8 @@ function travelPath(diagram) {
     steps
   };
 }
+
+exports.inputType = 'array';
 
 exports.part1 = function(rawInput) {
   const input = formatInput(rawInput);

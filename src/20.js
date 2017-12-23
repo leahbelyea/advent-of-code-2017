@@ -1,7 +1,5 @@
 const _ = require('lodash');
 
-exports.inputType = 'array';
-
 function formatInput(rawInput) {
   return _.map(rawInput, line => {
     line = _.split(line, ', ');
@@ -90,6 +88,8 @@ function findParticlesLeft(particles) {
 
   return _.size(particles);
 }
+
+exports.inputType = 'array';
 
 exports.part1 = function(rawInput) {
   const input = formatInput(rawInput);
