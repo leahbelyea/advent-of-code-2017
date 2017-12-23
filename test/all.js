@@ -18,3 +18,5 @@ require('./17.js');
 require('./18.js');
 require('./19.js');
 require('./20.js');
+require('./21.js');
+require('./22.js');
