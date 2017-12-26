@@ -22,3 +22,4 @@ require('./21.js');
 require('./22.js');
 // No test for day 23
 require('./24.js');
+require('./25.js');

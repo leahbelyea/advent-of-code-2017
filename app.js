@@ -7,7 +7,12 @@ const rawInput = inputType === 'string' ?
   getInputArray(`${day}.txt`);
 
 console.log(`######## Advent of Code Day ${day} ########\n`);
-console.log('# Part 1 #');
-console.log(part1(rawInput));
-console.log('\n# Part 2 #');
-console.log(part2(rawInput));
+if (part1) {
+  console.log('# Part 1 #');
+  console.log(part1(rawInput));
+}
+
+if (part2) {
+  console.log('\n# Part 2 #');
+  console.log(part2(rawInput));
+}
